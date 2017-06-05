@@ -5,6 +5,33 @@
 
 "use strict";
 
+
+
+
+
+
+navigator.geolocation.getCurrentPosition(function(position) {
+  console.log(position.coords.latitude, position.coords.longitude);
+});
+
+
+function initMap() {
+var uluru = {lat: -25.363, lng: 131.044};
+var map = new google.maps.Map(document.getElementById('map'), {
+  zoom: 4,
+  center: uluru
+});
+var marker = new google.maps.Marker({
+  position: uluru,
+  map: map
+});
+}
+
+
+
+
+
+
 // function addData(users)  {
 //
 //   $.each(users.results, function(index, user) {   // $each(array, function)... works like enumerate
@@ -39,27 +66,30 @@
 // }
 //
 //
-// function fetcher() {                                         // creates new 'item'
-//
-//     let data;
-//
-//     $.ajax({
-//     url:'https://api.randomuser.me/',
-//     method: 'GET',
-//     data: {'results': 5},
-//
-//     success: function(rsp){
-//         console.log(rsp);
-//         data = rsp;
-//         addData(rsp)
-//     },
-//     error: function(err){
-//         console.log(err);
-//     }
-// });
-//
-//
-// }
+function fetcher() {                                         // creates new 'item'
+
+    let data;
+
+    $.ajax({
+    url:'https://developer.trimet.org/ws/V1/stops',
+    method: 'GET',
+    data: { 'appID': '4E96154581EDC8C3DD6D5EB4A',
+            'll': '-122.674731, 45.502257',
+            'meters': '100',
+            'json': 'true' },
+
+    success: function(rsp){
+        console.log(rsp);
+        data = rsp;
+        // addData(rsp)
+    },
+    error: function(err){
+        console.log(err);
+    }
+});
+
+
+}
 
 $('#sub_button').on('click', function(event){
   // event handler for handling ...
