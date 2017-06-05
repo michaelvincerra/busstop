@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>BUS STOP</title>
+
+
+    <!-- STYLESHEETS-->
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+
+
+    <!--JQUERY-->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <!--JQUERY UI-->
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
+
+    <!--FONTS--->
+    <link href="https://fonts.googleapis.com/css?family=Dosis|Signika" rel="stylesheet">
+
+
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+
+</head>
+
+    <body>
+        <main>
+            <h1>TRI-MET BUS STOP FINDER</h1>
+            <!--ALL CONTAINER-->
+            <section class="all_container">
+
+                <!--ROW 1-->
+                <section id="row1">
+                    <h2> Select submit button to list buses within 100 meters<br/>
+                        <form class="form" action="" method="get">
+                              <button id="sub_button" type="submit">Bus Me!</button>
+                        </form>
+                    </h2>
+
+
+
+
+
+
+
+
+
+
+                </section>
+
+                <!--ROW 2-->
+                 <section id="row2">
+                    <h2> Select a link below to show your bus line map.</h2>
+
+                     <div id="map"></div>
+                        <script>
+                          function initMap() {
+                            var uluru = {lat: -25.363, lng: 131.044};
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                              zoom: 4,
+                              center: uluru
+                            });
+                            var marker = new google.maps.Marker({
+                              position: uluru,
+                              map: map
+                            });
+                          }
+                        </script>
+                        <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2niofM-gAglkvQM5jmv-RSR-kEM1ISGA&callback=initMap">
+
+
+                        </script>
+
+                 </section>
+
+
+
+
+
+
+           </section>
+
+        </main>
+    </body>
+
+<script src="static/js/script.js"></script>
+
+</html>
