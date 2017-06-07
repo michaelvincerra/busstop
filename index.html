@@ -28,7 +28,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
           crossorigin="anonymous">
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!--JQUERY UI CSS-->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
     <!-- STYLESHEETS-->
@@ -65,7 +67,7 @@
                  <section id="row2">
                     <h2> Select a link below to show your bus line map.</h2>
 
-                     <input onclick="deleteMarkers();" type=button value="Clear Bus Stops">
+                     <!--<input onclick="clearMarkers();" type=button value="Clear Bus Stops">-->
 
                      <div id="map"></div>
 
@@ -73,7 +75,9 @@
                  </section>
 
                 <!--ROW 3-->
-                 <section id="row3">
+                 <section id="row3" class="container">
+
+                   <!--The Slider -->
                     <div id="slider">
                       <div id="custom-handle" class="ui-slider-handle"></div>
                     </div>
@@ -89,6 +93,7 @@
                       </thead>
 
                       <tbody id="buses">
+                      <!--This is populated with jquery-->
                         <!--<tr>-->
                           <!--<th scope="row">1</th>-->
                           <!--<td>99</td>-->
