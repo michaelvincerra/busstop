@@ -8,7 +8,8 @@
 
 let map;   // set to global so that other functions can use the map object.
 
-let stopMarker;
+
+
 
 
 function populateBus(index, bus) {
@@ -35,7 +36,7 @@ function addBusStopMarker(bus) {
     let busStopLoc = new google.maps.LatLng(bus.lat, bus.lng);
     let iconBase = 'static/img/bus.png';
 
-    let stopMarker = new google.maps.Marker({                           // JSON object. key:value pair
+    let stopMarker = new google.maps.Marker({                           // JSON object. key: value pair
     position: busStopLoc,
         title: bus.desc,
         icon: iconBase
@@ -63,7 +64,9 @@ function addBusStopMarker(bus) {
       '</div>'+
       '</div>';
 
-    let infowindow = new google.maps.InfoWindow({
+
+
+    var infowindow = new google.maps.InfoWindow({
         content: contentString
     });
 
@@ -71,17 +74,12 @@ function addBusStopMarker(bus) {
         infowindow.open(map, stopMarker);
     });
 
-    // stopMarker.addListener('click', function deleteMarkers() {
-    // clearMarkers();
-    // stopMarker = [];
-    //  });
 
 
 
     // To add the marker to the map, call setMap();
     stopMarker.setMap(map);
 }
-
 
 
 function addMapLinks(busses) {
@@ -94,11 +92,7 @@ function addMapLinks(busses) {
 }
 
 
-function fetcher(position, meters) {                                         // creates new 'item'
-
-    if (typeof meters === 'undefined'){
-        let meters = '300';
-    }
+function fetcher(position) {                                         // creates new 'item'
 
     let lat = position.coords.latitude;
     let long = position.coords.longitude;
@@ -106,7 +100,7 @@ function fetcher(position, meters) {                                         // 
 
     let request_params = { 'appID': '4E96154581EDC8C3DD6D5EB4A',
                             'll': `${lat},${long}`,
-                            'meters': meters,
+                            'meters': '300',
                             'json': 'true' };
     $.ajax({
     url:'https://developer.trimet.org/ws/V1/stops',   //
@@ -161,36 +155,7 @@ function getPosition() {
     }
 }
 
-$(function () {
-    let handle = $("#custom-handle");
-
-    $("#slider").slider({
-        max: 1500,
-        min: 100,
-        // value: 100,
-        step: 50,
-
-        create: function () {
-            handle.text($(this).slider("value"));
-        },
-        slide: function (event, ui) {
-            handle.text(ui.value);    // ui.value is the value of the current location.
-        },
-        stop: function( event, ui ) {
-            console.log('Moved slider');
-
-            navigator.geolocation.getCurrentPosition(function(position) {
-                fetcher(position, ui.value);
-            });
-        }
-        // stopMarker.addListener('click', function deleteMarkers() {
-        // clearMarkers();
-        // stopMarker = [];
-        //  });
-
-
-    });
-});
+$("#slider").slider();
 
 
 

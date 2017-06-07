@@ -1,5 +1,5 @@
 body {
-    background-color: #F5F9FC;
+    background-color: #e0f0f9;
 
 }
 
@@ -52,13 +52,13 @@ h2 {
     margin: 3px;
 }
 
-#custom-handle {
-width: 3em;
-height: 1.6em;
-top: 50%;
-margin-top: -.8em;
-text-align: center;
-line-height: 1.6em;
+#slider {
+    width: 30px;
+    height: 10px;
+    background-color: #2bbbff;
+    /*margin: 2px solid blue;*/
+
+
 }
 
 

@@ -6,9 +6,7 @@
     <meta charset="UTF-8">
     <title>BUS STOP</title>
 
-
-    <!-- STYLESHEETS-->
-    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
     <!--JQUERY-->
@@ -26,6 +24,17 @@
     <!--FONTS--->
     <link href="https://fonts.googleapis.com/css?family=Dosis|Signika" rel="stylesheet">
 
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+          crossorigin="anonymous">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+    <!-- STYLESHEETS-->
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+
+
 
     <style>
        #map {
@@ -38,17 +47,17 @@
 
     <body>
         <main>
-            <h1>TRI-MET BUS STOP FINDER</h1>
+            <h1>GET ON THE BUS! </h1>
             <!--ALL CONTAINER-->
             <section class="all_container">
 
                 <!--ROW 1-->
                 <section id="row1">
-                    <h2> Select submit button to find buses within 100 meters<br/>
-                        <form class="form" action="" method="get">
-                              <button id="sub_button" type="submit">Bus Me!</button>
-                        </form>
-                    </h2>
+                    <!--<h2> Select submit button to find buses within 100 meters<br/>-->
+                        <!--<form class="form" action="" method="get">-->
+                              <!--<button id="sub_button" type="submit">Bus Me!</button>-->
+                        <!--</form>-->
+                    <!--</h2>-->
 
                 </section>
 
@@ -56,13 +65,40 @@
                  <section id="row2">
                     <h2> Select a link below to show your bus line map.</h2>
 
+                     <input onclick="deleteMarkers();" type=button value="Clear Bus Stops">
+
                      <div id="map"></div>
+
 
                  </section>
 
                 <!--ROW 3-->
                  <section id="row3">
-                     <table id="table"></table>
+                    <div id="slider">
+                      <div id="custom-handle" class="ui-slider-handle"></div>
+                    </div>
+
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Location ID</th>
+                          <th>Heading</th>
+                          <th>Location</th>
+                        </tr>
+                      </thead>
+
+                      <tbody id="buses">
+                        <!--<tr>-->
+                          <!--<th scope="row">1</th>-->
+                          <!--<td>99</td>-->
+                          <!--<td>42</td>-->
+                          <!--<td>SW Corbett</td>-->
+                        <!--</tr>-->
+                      </tbody>
+
+                    </table>
+
                  </section>
 
 
@@ -74,6 +110,8 @@
 <script src="static/js/script.js"></script>
 
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2niofM-gAglkvQM5jmv-RSR-kEM1ISGA&callback=geoLocator">
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2niofM-gAglkvQM5jmv-RSR-kEM1ISGA&callback=getPosition">
 </script>
+
+
 </html>
