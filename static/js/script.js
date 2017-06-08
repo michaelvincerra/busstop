@@ -13,6 +13,15 @@
 let map;    // set to global so that other functions can use the map object.
 let stopMarkers =  new Array();      // empty array; set to global.
 
+function paddy(number, padding, character) {
+    // Pads any number or sting with the input char the number
+    var pad_char = typeof character !== 'undefined' ? character : '0';
+    var pad = new Array(1 + padding).join(pad_char);
+    return (pad + number).slice(-pad.length);
+
+}
+
+
 function populateBus(index, bus) {
         // <tr>
         //   <th scope="row">1</th>
@@ -39,9 +48,43 @@ function makeInfoWindow(busStop, arrivals){
 
     let $description = $('<p>').text(`${busStop.desc}`);
     let $heading = $('<h4>').text(`${busStop.dir}`);
-    let $arrivals = $('<div>').text(`${busStop.arrival}`);
-
     let $body = $ ('<section>').append($heading, $description) ;
+
+    $.each(arrivals, function(index, arrival){
+
+        if (typeof arrival.schedule === 'undefined'){
+            var utcSeconds = arrival.scheduled;
+        } else if (!typeof arrival.estimated === 'undefined'){
+            var utcSeconds = arrival.estimated;
+       }
+        let date = new Date(0); // The 0 there is the key, which sets the date to the epoch
+        date.setUTCSeconds(utcSeconds);
+
+
+
+        let arrivalTime = $('<div>').text(`ETA: ${date}`);    // TODO: Solve for the correct time!!
+        let route = $('<div>').text(`Route: ${arrival.route}`);
+        let status = $('<div>').text(`Status: ${arrival.status}`);
+
+        let routeNum = paddy(arrival.route, 3, 0);
+
+        let routeLink = $('<a>', {'href': `https://trimet.org/schedules/r${routeNum}.htm`,
+                                   'class': 'routelink'});
+        routeLink.text(`Link to route: ${routeNum}`);
+
+        let infoGlyph = $('<i>', {'class': 'fa fa-bus'});
+
+        let routeLinkBox = $('<p>').append(infoGlyph, routeLink);
+
+        let arrivalMeta = $('<div>', {'class': "arrival"});
+        arrivalMeta.append(arrivalTime, route, status, routeLinkBox);
+
+        $body.append(arrivalMeta);
+    });
+
+// Can you build a function that shows the current bus location en route?
+//  See: https://developer.trimet.org/ws_docs/vehicle_locations_ws.shtml
+
 
     let $content = $('<main>').append($heading, $body);
     return $content.html();
@@ -49,9 +92,9 @@ function makeInfoWindow(busStop, arrivals){
 
 
 function prepInfoWindow(busStop, arrivals, map, stopMarker){
-     let contentString = makeInfoWindow(busStop, arrivals);
+    let contentString = makeInfoWindow(busStop, arrivals);
 
-        let infowindow = new google.maps.InfoWindow({
+    let infowindow = new google.maps.InfoWindow({
             content: contentString
         });
     infowindow.open(map, stopMarker);
@@ -76,7 +119,7 @@ function fetchArrivals(locID, busStop, map, stopMarker){
     $.ajax(ajax_options).done(function(response) {
         console.log(response);
         // let locID = response.resultSet.arrival.scheduled;   // 06.07.17  Restart here.  Is 'locID' the right variable to call?
-        let arrivals = response;  /// TODO: REVISE!!
+        let arrivals = response.resultSet.arrival;  /// TODO: REVISE!!
         prepInfoWindow(busStop, arrivals, map, stopMarker);
 
     }).fail(function(error){

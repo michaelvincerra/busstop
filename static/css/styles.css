@@ -23,6 +23,16 @@ h2 {
     margin-bottom: 0px;
     padding-bottom: 10px;
 }
+
+.routelink {
+    margin: 5px;
+
+}
+.arrival {
+    margin: 10px;
+
+}
+
 .all_container {
     display: flex;
     /*background-color: black;*/
