@@ -30,51 +30,78 @@ function populateBus(index, bus) {
 }
 
 
-function addBusStopMarker(bus) {
+function makeInfoWindow(busStop, arrivals){
+    // Generates an info window HTML to Google Map Marker objects.
 
-    let busStopLoc = new google.maps.LatLng(bus.lat, bus.lng);   // should this line be removed ?
+    // $.each(busStops.resultSet, function(index, busStop) {   // $each(array, function)... works like enumerate
+    //   let contentString = bus.location.locid;
+    //   let $contentString = $('<div>').text(${contentString});
+
+    let $description = $('<p>').text(`${busStop.desc}`);
+    let $heading = $('<h4>').text(`${busStop.dir}`);
+    let $arrivals = $('<div>').text(`${busStop.arrival}`);
+
+    let $body = $ ('<section>').append($heading, $description) ;
+
+    let $content = $('<main>').append($heading, $body);
+    return $content.html();
+}
+
+
+function prepInfoWindow(busStop, arrivals, map, stopMarker){
+     let contentString = makeInfoWindow(busStop, arrivals);
+
+        let infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+    infowindow.open(map, stopMarker);
+
+}
+
+
+
+function fetchArrivals(locID, busStop, map, stopMarker){
+    // Fetches vehicle arrival data for a single transit stop
+    let request_params = {  'appID': '4E96154581EDC8C3DD6D5EB4A',
+                            'json': 'true',
+                            'locIDs': locID,
+                            'minutes': '30',
+                            'arrivals': '2'
+    };
+
+    let ajax_options = {type: 'GET',
+                        data: request_params,
+                        url: 'https://developer.trimet.org/ws/v2/arrivals'};
+
+    $.ajax(ajax_options).done(function(response) {
+        console.log(response);
+        // let locID = response.resultSet.arrival.scheduled;   // 06.07.17  Restart here.  Is 'locID' the right variable to call?
+        let arrivals = response;  /// TODO: REVISE!!
+        prepInfoWindow(busStop, arrivals, map, stopMarker);
+
+    }).fail(function(error){
+        console.log(error);
+});
+    // return locID
+}
+
+
+
+
+
+function addBusStopMarker(busStop) {
+
+    let busStopLoc = new google.maps.LatLng(busStop.lat, busStop.lng);   // should this line be removed ?
+
     let iconBase = 'static/img/bus.png';
     let stopMarker = new google.maps.Marker({                           // JSON object. key:value pair
         position: busStopLoc,
-        title: bus.desc,
+        title: busStop.desc,
         icon: iconBase
     });
 
-////////////////////
-      $.each(bus.resultSet, function(index, bus) {   // $each(array, function)... works like enumerate
-
-      let contentString = bus.locid;
-
-      let $contentString = $('<div>').text(${contentString}`); 
-
-
-/////////////////
-
-    let contentString = '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-        '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
-        '</div>' +
-        '</div>';
-    let infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
     stopMarker.addListener('click', function () {
-        infowindow.open(map, stopMarker);
+        fetchArrivals(busStop.locid, busStop, map, stopMarker);
     });
 
     stopMarkers.push(stopMarker);   //  Push the stopMarker to the markers array ; 06.07.17
@@ -156,6 +183,8 @@ function getPosition() {
       console.log("Geolocation not enabled")
     }
 }
+
+
 /////////////////////////////////////////////////////////////////////////////////////  Clearing Logic
 
 function setMapOnAll(map) {
@@ -192,7 +221,7 @@ function clearTable() {
 }
 
 function clearAll(){
-    // clear the map
+    // clear markers on map
     clearMarkers();
     // clear the table
     clearTable();
@@ -207,6 +236,13 @@ function updateStops(event, ui){
     navigator.geolocation.getCurrentPosition(function(position) {
         fetcher(position, ui.value);
     });
+    // navigator.geolocation.getCurrentPosition(function(pos) {
+    //     let loc = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+    //     let meters = ui.value;
+    //     fetcher(loc, meters);
+    // });
+
+
 }
 
 $(function () {

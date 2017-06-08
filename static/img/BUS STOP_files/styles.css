@@ -1,5 +1,5 @@
 body {
-    background-color: #e0f0f9;
+    background-color: #F5F9FC;
 
 }
 
@@ -21,6 +21,7 @@ h2 {
     justify-content: center;
     text-align: center;
     margin-bottom: 0px;
+    padding-bottom: 10px;
 }
 .all_container {
     display: flex;
@@ -52,13 +53,13 @@ h2 {
     margin: 3px;
 }
 
-#slider {
-    width: 30px;
-    height: 10px;
-    background-color: #2bbbff;
-    /*margin: 2px solid blue;*/
-
-
+#custom-handle {
+width: 3em;
+height: 1.6em;
+top: 50%;
+margin-top: -.8em;
+text-align: center;
+line-height: 1.6em;
 }
 
 
