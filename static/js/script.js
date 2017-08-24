@@ -60,11 +60,13 @@ function makeInfoWindow(busStop, arrivals){
        //  let date = new Date(0); // The 0 there is the key, which sets the date to the epoch
        //  date.setUTCSeconds(utcSeconds);
 
-        // let scheduled = arrival.scheduled; // TODO: Complete/ revise 'scheduled_time' below.
+        // let scheduled = arrival.scheduled; // TODO: Complete revision of 'scheduled_time' below. 24.08.17
 
         let estimated = arrival.estimated;
+        let scheduled = arrival.scheduled;
 
         let date = new Date(estimated);
+        let scheduled_time = new Date(scheduled);
 
         // let scheduled = new Date(scheduled);
 
@@ -83,7 +85,7 @@ function makeInfoWindow(busStop, arrivals){
         let arrivalTime = $('<div>').text(`ETA: ${date}`);    // TODO: Solve for the correct time!!
         let route = $('<div>').text(`Route: ${arrival.route}`);
         let status = $('<div>').text(`Status: ${arrival.status}`);
-        // let scheduled_time = $('<div>'.text(`Scheduled: ${scheduled}`));
+        let scheduled_time = $('<div>').text(`Scheduled: ${scheduled_time}`);
 
         let routeNum = paddy(arrival.route, 3, 0);
 
@@ -96,7 +98,7 @@ function makeInfoWindow(busStop, arrivals){
         let routeLinkBox = $('<p>').append(infoGlyph, routeLink);
 
         let arrivalMeta = $('<div>', {'class': "arrival"});
-        arrivalMeta.append(arrivalTime, route, status, routeLinkBox,);
+        arrivalMeta.append(arrivalTime, route, status, scheduled_time, routeLinkBox,);
 
         $body.append(arrivalMeta);
     });
