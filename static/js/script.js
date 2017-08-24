@@ -18,7 +18,6 @@ function paddy(number, padding, character) {
     var pad_char = typeof character !== 'undefined' ? character : '0';
     var pad = new Array(1 + padding).join(pad_char);
     return (pad + number).slice(-pad.length);
-
 }
 
 
@@ -48,23 +47,43 @@ function makeInfoWindow(busStop, arrivals){
 
     let $description = $('<p>').text(`${busStop.desc}`);
     let $heading = $('<h4>').text(`${busStop.dir}`);
-    let $body = $ ('<section>').append($heading, $description) ;
+    let $body = $('<section>').append($heading, $description) ;
+    // let $div = $('<div>').append(busStop.arrival.estimated);
 
     $.each(arrivals, function(index, arrival){
 
-        if (typeof arrival.schedule === 'undefined'){
-            var utcSeconds = arrival.scheduled;
-        } else if (!typeof arrival.estimated === 'undefined'){
-            var utcSeconds = arrival.estimated;
-       }
-        let date = new Date(0); // The 0 there is the key, which sets the date to the epoch
-        date.setUTCSeconds(utcSeconds);
+       //  if (typeof arrival.schedule === 'undefined'){   // VERSION 06/2017
+       //      var utcSeconds = arrival.scheduled;
+       //  } else if (!typeof arrival.estimated === 'undefined'){
+       //      var utcSeconds = arrival.estimated;
+       // }
+       //  let date = new Date(0); // The 0 there is the key, which sets the date to the epoch
+       //  date.setUTCSeconds(utcSeconds);
+
+        // let scheduled = arrival.scheduled; // TODO: Complete/ revise 'scheduled_time' below.
+
+        let estimated = arrival.estimated;
+
+        let date = new Date(estimated);
+
+        // let scheduled = new Date(scheduled);
 
 
+        // if (!typeof arrival.schedule === 'undefined'){   // VERSION 08/2017
+        //     let scheduled = arrival.scheduled.toISOString();
+        // } else if (!typeof arrival.estimated === 'undefined') {
+        //     let estimated = arrival.estimated.toISOString();
+        // }
+
+        /*
+        use the documentation here to change the date time object.
+        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+         */
 
         let arrivalTime = $('<div>').text(`ETA: ${date}`);    // TODO: Solve for the correct time!!
         let route = $('<div>').text(`Route: ${arrival.route}`);
         let status = $('<div>').text(`Status: ${arrival.status}`);
+        // let scheduled_time = $('<div>'.text(`Scheduled: ${scheduled}`));
 
         let routeNum = paddy(arrival.route, 3, 0);
 
@@ -77,7 +96,7 @@ function makeInfoWindow(busStop, arrivals){
         let routeLinkBox = $('<p>').append(infoGlyph, routeLink);
 
         let arrivalMeta = $('<div>', {'class': "arrival"});
-        arrivalMeta.append(arrivalTime, route, status, routeLinkBox);
+        arrivalMeta.append(arrivalTime, route, status, routeLinkBox,);
 
         $body.append(arrivalMeta);
     });
@@ -103,23 +122,26 @@ function prepInfoWindow(busStop, arrivals, map, stopMarker){
 
 
 
-function fetchArrivals(locID, busStop, map, stopMarker){
+function fetchArrivals(locID, busStop, map, stopMarker){                // Web Services
     // Fetches vehicle arrival data for a single transit stop
     let request_params = {  'appID': '4E96154581EDC8C3DD6D5EB4A',
                             'json': 'true',
                             'locIDs': locID,
                             'minutes': '30',
+                            'estimated': '3',
                             'arrivals': '2'
     };
 
-    let ajax_options = {type: 'GET',
+    let ajax_options = {type: 'GET',    // if in doubt, try POST first.
                         data: request_params,
-                        url: 'https://developer.trimet.org/ws/v2/arrivals'};
+                        url: 'https://developer.trimet.org/ws/V1/arrivals'};    // Changed v2 to v1 in url.
 
-    $.ajax(ajax_options).done(function(response) {
+    $.ajax(ajax_options).done(function(response) {          // Understand the shape of the data
         console.log(response);
         // let locID = response.resultSet.arrival.scheduled;   // 06.07.17  Restart here.  Is 'locID' the right variable to call?
         let arrivals = response.resultSet.arrival;  /// TODO: REVISE!!
+        // let arrivals = response.resultSet.estimated;
+
         prepInfoWindow(busStop, arrivals, map, stopMarker);
 
     }).fail(function(error){
@@ -127,9 +149,6 @@ function fetchArrivals(locID, busStop, map, stopMarker){
 });
     // return locID
 }
-
-
-
 
 
 function addBusStopMarker(busStop) {
