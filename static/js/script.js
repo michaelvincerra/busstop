@@ -70,15 +70,8 @@ function makeInfoWindow(busStop, arrivals){
 
         // let scheduled = new Date(scheduled);
 
-
-        // if (!typeof arrival.schedule === 'undefined'){   // VERSION 08/2017
-        //     let scheduled = arrival.scheduled.toISOString();
-        // } else if (!typeof arrival.estimated === 'undefined') {
-        //     let estimated = arrival.estimated.toISOString();
-        // }
-
         /*
-        use the documentation here to change the date time object.
+        Use documentation here to change the date time object.
         https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
          */
 
