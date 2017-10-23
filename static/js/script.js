@@ -1,12 +1,11 @@
 /**
- * Created by michaelevan on 6/2/17.
+ * Created by michael vincerra.
  */
 
 
 "use strict";
 
 // TODO:
-// Create href to connect bus schedules to their locid.
 // Create 'contentString' relative to the bus's locid.
 // Integrate a Google street view into maps.
 
@@ -22,7 +21,7 @@ function paddy(number, padding, character) {
 
 
 function populateBus(index, bus) {
-        // <tr>
+        // <tr> Example design of table display.
         //   <th scope="row">1</th>
         //   <td>99</td>
         //   <td>42</td>
@@ -96,7 +95,7 @@ function makeInfoWindow(busStop, arrivals){
         $body.append(arrivalMeta);
     });
 
-// Can you build a function that shows the current bus location en route?
+// TODO:  Can you build a function that shows the current bus location en route?
 //  See: https://developer.trimet.org/ws_docs/vehicle_locations_ws.shtml
 
 
@@ -131,9 +130,9 @@ function fetchArrivals(locID, busStop, map, stopMarker){                // Web S
                         data: request_params,
                         url: 'https://developer.trimet.org/ws/V1/arrivals'};    // Changed v2 to v1 in url.
 
-    $.ajax(ajax_options).done(function(response) {          // Understand the shape of the data
+    $.ajax(ajax_options).done(function(response) {
         console.log(response);
-        // let locID = response.resultSet.arrival.scheduled;   // 06.07.17  Restart here.  Is 'locID' the right variable to call?
+        // let locID = response.resultSet.arrival.scheduled;
         let arrivals = response.resultSet.arrival;  /// TODO: REVISE!!
         // let arrivals = response.resultSet.estimated;
 
@@ -148,7 +147,7 @@ function fetchArrivals(locID, busStop, map, stopMarker){                // Web S
 
 function addBusStopMarker(busStop) {
 
-    let busStopLoc = new google.maps.LatLng(busStop.lat, busStop.lng);   // should this line be removed ?
+    let busStopLoc = new google.maps.LatLng(busStop.lat, busStop.lng);
 
     let iconBase = 'static/img/bus.png';
     let stopMarker = new google.maps.Marker({                           // JSON object. key:value pair
@@ -161,7 +160,7 @@ function addBusStopMarker(busStop) {
         fetchArrivals(busStop.locid, busStop, map, stopMarker);
     });
 
-    stopMarkers.push(stopMarker);   //  Push the stopMarker to the markers array ; 06.07.17
+    stopMarkers.push(stopMarker);   //  Push the stopMarker to the markers array
     stopMarker.setMap(map);         //  Add  the marker to the map, call setMap();
 }
 
@@ -322,24 +321,3 @@ $(function () {
 });
 
 
-
-// 06.07.17: TEST
-//     if () {
-//         stopMarker.setMap(null);
-//     } else {
-//
-//     }
-//
-// }
-
-// 06.07.17: TEST
-// stopMarker.addListener('click', function deleteMarkers() {
-// clearMarkers();
-// stopMarker = [];
-//  });
-
-
-// $('#sub_button').on('click', function(event){
-//   // event handler for handling ...
-//   event.preventDefault();
-// });
